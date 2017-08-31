@@ -9,9 +9,9 @@ BEGIN_OF_SENTENCE ['.'-{DIGIT}]
 END_OF_SENTENCE	[\n|' '|'	']	
 
 
-
-HEX 		[0x]({DIGIT}+|[a-eA-E]+)+{END_OF_SENTENCE}     
-INTEGER 	^{DIGIT}+{END_OF_SENTENCE} /*Still accept weird characters at the beginning*/
+OCTAL 				[0][0-8]+{END_OF_SENTENCE}
+HEXADECIMAL 		[0][x]({DIGIT}+|[a-eA-E]+)+{END_OF_SENTENCE}     
+INTEGER 	^[1-9]+{DIGIT}*|[0]{END_OF_SENTENCE} 
 FLOATING 	{DIGIT}+"."{DIGIT}+{END_OF_SENTENCE}
 
 /*EOF			^[\n]*/
@@ -20,8 +20,10 @@ FLOATING 	{DIGIT}+"."{DIGIT}+{END_OF_SENTENCE}
 
 /*Rules*/
 %%
-{HEX}		printf("It's a hexadecimal!\n");
+
+{HEXADECIMAL}		printf("It's a hexadecimal!\n");
 {INTEGER}   printf("It's an integer!\n");/*Keep atoi function. May try a define :)*/
+{OCTAL}		printf("It's a octal!\n");
 {FLOATING}	printf("It's a float!\n");
 <<EOF>>		exit(00);
 
